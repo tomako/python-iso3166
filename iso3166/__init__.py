@@ -288,16 +288,20 @@ class _CountryLookup(object):
         else:
             return _by_name[k]
 
-    get = __getitem__
-
     def __iter__(self):
         return iter(_records)
 
-    def __contains__(self, item):
+    def __contains__(self, key):
         try:
-            self.get(item)
+            self.__getitem__(key)
             return True
         except KeyError:
             return False
+
+    def get(self, key, default=None):
+        try:
+            return self.__getitem__(key)
+        except KeyError:
+            return default
 
 countries = _CountryLookup()
